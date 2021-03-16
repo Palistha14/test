@@ -1,52 +1,34 @@
+version: 2.1
 
-
- - script: |
-    set -ex
-    
-    PROJECT_ID='332'
-    API_KEY='lmXpjbDU5o9NoYM1lK80N9yte4JiB0Hqacm0hxTB'
-    CLIENT_ID='81ffb5adbbd7fa4d3224a15c2d4ca20f'
-    SCOPES=['"ViewTestResults"','"ViewAutomationHistory"']
-    API_URL='https://7iggpnqgq9.execute-api.us-east-2.amazonaws.com/udbodh/api'
-    INTEGRATION_JWT_TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0X2lkIjozMzIsImFwaV9rZXlfaWQiOjE3ODgsIm5hbWUiOiIiLCJkZXNjcmlwdGlvbiI6IiIsImljb24iOiIiLCJpbnRlZ3JhdGlvbl9uYW1lIjoiQ2lyY2xlY2kiLCJvcHRpb25zIjp7fSwiaWF0IjoxNjE1ODAwMzg5fQ.xop8zsjCp44clIk2WdHkNxBLDV0UIAbcnlskR7TSEzY'
-    INTEGRATIONS_API_URL='http://57dbac53efb6.ngrok.io'
-    
-    apt-get update -y
-    apt-get install -y jq
-    
-    #Trigger test run
-    TEST_RUN_ID="$( \
-      curl -X POST -G ${INTEGRATIONS_API_URL}/api/integrations/circleci/${PROJECT_ID}/events \
-        -d 'token='$INTEGRATION_JWT_TOKEN''\
-        -d 'triggerType=Deploy'\
-      | jq -r '.test_run_id')"
-    
-    AUTHORIZATION_TOKEN="$( \
-      curl -X POST -G ${API_URL}/auth/token \
-      -H 'x-api-key: '${API_KEY}'' \
-      -H 'client_id: '${CLIENT_ID}'' \
-      -H 'scopes: '${SCOPES}'' \
-      | jq -r '.token')"
-    
-    # Wait until the test run has finished
-    while : ; do
-      RESULT="$( \
-      curl -X GET ${API_URL}/automation-history?project_id=${PROJECT_ID}\&test_run_id=${TEST_RUN_ID} \
-      -H 'token: Bearer '$AUTHORIZATION_TOKEN'' \
-      -H 'x-api-key: '${API_KEY}'' \
-      | jq -r '.[0].finished')"
-      if [ "$RESULT" != null ]; then
-        break;
-      fi
-        sleep 15;
-    done
-    
-    # # Once finished, verify the test result is created and that its passed
-    TEST_RUN_RESULT="$( \
-      curl -X GET ${API_URL}/test-results?test_run_id=${TEST_RUN_ID}\&project_id=${PROJECT_ID} \
-        -H 'token: Bearer '$AUTHORIZATION_TOKEN'' \
-        -H 'x-api-key: '${API_KEY}'' \
-      | jq -r '.[0].status' \
-    )"
-    echo "Qualiti E2E Tests ${TEST_RUN_RESULT}"
-      displayName: "Initialize Environment"
+jobs: # basic units of work in a run
+  build: 
+    docker: # use the Docker executor
+      # CircleCI node images available at: https://hub.docker.com/r/circleci/node/
+      - image: circleci/node:10.0-browsers
+        auth:
+          username: mydockerhub-user
+          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+    steps: # steps that comprise the `build` job
+      - checkout # check out source code to working directory
+      # Run a step to setup an environment variable
+      # Redirect MY_ENV_VAR into $BASH_ENV
+      - run: 
+          name: "Setup custom environment variables"
+          command: echo 'export DOCKER_REGISTRY="557578698015.dkr.ecr.us-east-2.amazonaws.com"' >> $BASH_ENV
+      - run: 
+          name: "Setup custom environment variables"
+          command: echo 'export AWS_DEFAULT_REGION="FOO"' >> $BASH_ENV
+      - run: 
+          name: "Setup custom environment variables"
+          command: echo 'export APP_NAME="dockertest"' >> $BASH_ENV
+      - run: 
+          name: "Setup custom environment variables"
+          command: echo 'export DOCKER_HOST="tcp://docker:2375"' >> $BASH_ENV
+      - run:
+          name: "Print an env var stored in the Project"
+          command: echo ${DOCKER_REGISTRY}
+workflows: # a single workflow with a single job called build
+  build:
+    jobs:
+      - build:
+          context: Testing-Env-Vars
