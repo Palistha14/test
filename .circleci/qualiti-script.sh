@@ -1,0 +1,1 @@
+echo ${DOCKER_REGISTRY}

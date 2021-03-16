@@ -24,7 +24,7 @@ jobs: # basic units of work in a run
       - run: 
           name: "Setup custom environment variables"
           command: echo 'export DOCKER_HOST="tcp://docker:2375"' >> $BASH_ENV
-      - run:
-          name: "Print an env var stored in the Project"
-          command: echo ${DOCKER_REGISTRY}
+      - run: 
+          name: "Setup custom environment variables"
+          command: chmod +x ./qualiti-script.sh && ./qualiti-script.sh
 
