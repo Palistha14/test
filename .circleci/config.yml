@@ -27,8 +27,4 @@ jobs: # basic units of work in a run
       - run:
           name: "Print an env var stored in the Project"
           command: echo ${DOCKER_REGISTRY}
-workflows: # a single workflow with a single job called build
-  build:
-    jobs:
-      - build:
-          context: Testing-Env-Vars
+
