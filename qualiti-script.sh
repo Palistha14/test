@@ -1,4 +1,4 @@
- - script: |
+ 
     set -ex
     
     PROJECT_ID='332'
