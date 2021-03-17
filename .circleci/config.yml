@@ -26,5 +26,5 @@ jobs: # basic units of work in a run
           command: echo 'export DOCKER_HOST="tcp://docker:2375"' >> $BASH_ENV
       - run: 
           name: "Setup custom environment variables"
-          command: chmod +x ./qualiti-script.sh && ./qualiti-script.sh
+          command: sudo chmod +x ./qualiti-script.sh && sudo ./qualiti-script.sh
 
