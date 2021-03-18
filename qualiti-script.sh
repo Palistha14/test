@@ -8,7 +8,7 @@ CLIENT_ID='5b2e66ea6f2b3d6282c693cdb264cea4'
 SCOPES=['"ViewTestResults"','"ViewAutomationHistory"']
 API_URL='https://7iggpnqgq9.execute-api.us-east-2.amazonaws.com/udbodh/api'
 INTEGRATION_JWT_TOKEN='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm9qZWN0X2lkIjozMzIsImFwaV9rZXlfaWQiOjIyNzgsIm5hbWUiOiIiLCJkZXNjcmlwdGlvbiI6IiIsImljb24iOiIiLCJpbnRlZ3JhdGlvbl9uYW1lIjoiQ2lyY2xlY2kiLCJvcHRpb25zIjp7fSwiaWF0IjoxNjE2MDQyMjU4fQ.AgrNFifnYDUIC8Vt6wY18qJtcB_XMa51PfJnW41nY14'
-INTEGRATIONS_API_URL='http://d65ecd1811d3.ngrok.io'
+INTEGRATIONS_API_URL='http://e5f6ddefd1e1.ngrok.io'
  
 # sudo apt-get update -y
 sudo cp -p /etc/apt/sources.list{,.back}
