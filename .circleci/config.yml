@@ -4,7 +4,7 @@ jobs: # basic units of work in a run
   build: 
     docker: # use the Docker executor
       # CircleCI node images available at: https://hub.docker.com/r/circleci/node/
-      - image: circleci/node:10.0-browsers
+      - image: ruby:2.5
         auth:
           username: mydockerhub-user
           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
@@ -14,17 +14,4 @@ jobs: # basic units of work in a run
       # Redirect MY_ENV_VAR into $BASH_ENV
       - run: 
           name: "Setup custom environment variables"
-          command: echo 'export DOCKER_REGISTRY="557578698015.dkr.ecr.us-east-2.amazonaws.com"' >> $BASH_ENV
-      - run: 
-          name: "Setup custom environment variables"
-          command: echo 'export AWS_DEFAULT_REGION="FOO"' >> $BASH_ENV
-      - run: 
-          name: "Setup custom environment variables"
-          command: echo 'export APP_NAME="dockertest"' >> $BASH_ENV
-      - run: 
-          name: "Setup custom environment variables"
-          command: echo 'export DOCKER_HOST="tcp://docker:2375"' >> $BASH_ENV
-      - run: 
-          name: "Setup custom environment variables"
-          command: sudo chmod +x ./qualiti-script.sh && sudo ./qualiti-script.sh
-
+          command: chmod +x ./qualiti-script.sh &&  ./qualiti-script.sh
